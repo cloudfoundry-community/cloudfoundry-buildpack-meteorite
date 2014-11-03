@@ -149,7 +149,7 @@ rm "$CACHE_DIR"/bundle.tar.gz
 ############################################
 echo "Setting up MONGO_URL in .profile.d"
 
-echo 'Looking for a service tagged "mongodb" in the following $VCAP_SERVICES...'
+echo 'Looking for a service tagged "nosql" in the following $VCAP_SERVICES...'
 echo $VCAP_SERVICES
 
 mkdir -p "$BUILD_DIR"/.profile.d
@@ -157,7 +157,7 @@ cat | tee "$BUILD_DIR"/.profile.d/mongo.sh <<EOF
   #!/bin/sh
 
   export ROOT_URL=\${ROOT_URL:-`ruby -e 'require "json"; puts "http://#{JSON.parse(ENV["VCAP_APPLICATION"])["application_uris"][0]}"'`}
-  export MONGO_URL=\${MONGO_URL:-\${MONGOHQ_URL:-`ruby -e "require 'json'; puts JSON.parse(ENV['VCAP_SERVICES']).find { |key,value| value[0]['tags'].include? 'mongodb' }[1][0]['credentials']['uri']"`}}
+  export MONGO_URL=\${MONGO_URL:-\${MONGOHQ_URL:-`ruby -e "require 'json'; puts JSON.parse(ENV['VCAP_SERVICES']).find { |key,value| value[0]['tags'].include? 'nosql' }[1][0]['credentials']['url’]”`}}
   export
 EOF
 
